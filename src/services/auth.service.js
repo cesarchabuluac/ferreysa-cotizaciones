@@ -38,6 +38,10 @@ export default {
     return await api.get(`/v2/Auth/sucursales/${idEmpresa}`)
   },
 
+  async getAlmacenes(idEmpresa, idSucursal) {
+    return await api.get(`/v2/Auth/almacenes/${idEmpresa}/${idSucursal}`)
+  },
+
   async validateToken() {
     return await api.get('/v2/Auth/validate')
   }

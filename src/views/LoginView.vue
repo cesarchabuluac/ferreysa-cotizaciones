@@ -69,7 +69,7 @@
       </form>
 
       <div class="app-info">
-        <p>v1.0.0 | PWA</p>
+        <p>v1.0.0 | By Engineer</p>
       </div>
     </div>
   </div>
@@ -146,37 +146,74 @@ async function handleLogin() {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--gradient-primary);
   padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-view::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.login-view::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
 }
 
 .login-container {
   width: 100%;
-  max-width: 400px;
-  background: white;
-  border-radius: 16px;
-  padding: 32px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  max-width: 420px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 40px 32px;
+  box-shadow: var(--shadow-xl);
+  position: relative;
+  z-index: 1;
+  backdrop-filter: blur(10px);
 }
 
 .logo-section {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 36px;
+}
+
+.logo-section img {
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  margin-bottom: 16px;
+  animation: fadeInDown 0.6s ease;
 }
 
 .logo-section h1 {
   font-size: 32px;
   margin-bottom: 8px;
   color: var(--text-primary);
+  font-weight: 700;
 }
 
 .logo-section p {
   color: var(--text-secondary);
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
 .login-form {
   margin-bottom: 24px;
+  animation: fadeInUp 0.6s ease 0.2s backwards;
 }
 
 .app-info {
@@ -194,24 +231,26 @@ async function handleLogin() {
 .input-label {
   display: block;
   margin-bottom: 8px;
-  color: #333;
-  font-weight: 500;
+  color: var(--text-primary);
+  font-weight: 600;
   font-size: 14px;
 }
 
 .input-field {
   width: 100%;
-  padding: 12px 16px;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
+  padding: 14px 16px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
   font-size: 16px;
-  transition: border-color 0.3s ease;
-  background: white;
+  transition: all var(--transition);
+  background: var(--surface);
 }
 
 .input-field:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(139, 21, 56, 0.1);
+  transform: translateY(-1px);
 }
 
 .input-field:disabled {
@@ -230,23 +269,30 @@ select.input-field:disabled {
 
 /* Button styles */
 .btn {
-  padding: 12px 24px;
+  padding: 14px 24px;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius);
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--transition);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: var(--gradient-primary);
+  color: var(--text-white);
+  box-shadow: var(--shadow-primary);
 }
 
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 6px 20px rgba(139, 21, 56, 0.35);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .btn-primary:disabled {
@@ -262,14 +308,60 @@ select.input-field:disabled {
 /* Alert styles */
 .alert {
   padding: 12px 16px;
-  border-radius: 8px;
+  border-radius: var(--radius);
   margin-bottom: 16px;
   font-size: 14px;
+  animation: slideInDown 0.3s ease;
 }
 
 .alert-error {
-  background-color: #fee;
-  border: 1px solid #fcc;
-  color: #c33;
+  background-color: #FFEBEE;
+  border-left: 4px solid var(--error);
+  color: var(--error);
+}
+
+/* Animations */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 32px 24px;
+  }
+  
+  .logo-section img {
+    height: 80px;
+  }
 }
 </style>

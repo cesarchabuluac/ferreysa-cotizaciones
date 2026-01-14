@@ -19,16 +19,22 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/almacen',
+    name: 'Almacen',
+    component: () => import('@/views/AlmacenView.vue'),
+    meta: { requiresAuth: true, requiresSucursal: true }
+  },
+  {
     path: '/scanner',
     name: 'Scanner',
     component: () => import('@/views/ScannerView.vue'),
-    meta: { requiresAuth: true, requiresSucursal: true }
+    meta: { requiresAuth: true, requiresSucursal: true, requiresAlmacen: true }
   },
   {
     path: '/cotizacion',
     name: 'Cotizacion',
     component: () => import('@/views/CotizacionView.vue'),
-    meta: { requiresAuth: true, requiresSucursal: true }
+    meta: { requiresAuth: true, requiresSucursal: true, requiresAlmacen: true }
   },
   {
     path: '/confirmacion/:folio',
@@ -47,15 +53,31 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
   
+  // Verificar autenticación
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     next('/login')
-  } else if (to.meta.requiresSucursal && !authStore.sucursalId) {
-    next('/sucursal')
-  } else if (to.path === '/login' && authStore.isAuthenticated) {
-    next('/sucursal')
-  } else {
-    next()
+    return
   }
+  
+  // Verificar sucursal
+  if (to.meta.requiresSucursal && !authStore.sucursalId) {
+    next('/sucursal')
+    return
+  }
+  
+  // Verificar almacén
+  if (to.meta.requiresAlmacen && !authStore.almacenId) {
+    next('/almacen')
+    return
+  }
+  
+  // Redirigir usuarios autenticados desde login
+  if (to.path === '/login' && authStore.isAuthenticated) {
+    next('/sucursal')
+    return
+  }
+  
+  next()
 })
 
 export default router

@@ -28,7 +28,7 @@
         </div>
       </div>
 
-      <button @click="handleLogout" class="btn btn-secondary btn-block mt-3">
+      <button @click="handleLogout" class="btn btn-primary btn-block mt-3">
         Cerrar Sesión
       </button>
     </div>
@@ -68,7 +68,7 @@ onMounted(async () => {
 function selectSucursal(sucursal) {
     if(!sucursal) return
     authStore.setSucursal(sucursal.sucursalId, sucursal.nombre)
-    router.push('/scanner')
+    router.push('/almacen')
 }
 
 function handleLogout() {
@@ -80,8 +80,11 @@ function handleLogout() {
 <style scoped>
 .sucursal-view {
   min-height: 100vh;
+  max-height: 100vh;
+  overflow-y: auto;
   background-color: var(--background);
   padding: 20px 0;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling en iOS */
 }
 
 .header {
@@ -107,18 +110,38 @@ function handleLogout() {
 
 .sucursal-card {
   background: var(--surface);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   padding: 24px 16px;
   text-align: center;
   cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: var(--shadow);
+  transition: all var(--transition);
+  box-shadow: var(--shadow-md);
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.sucursal-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--gradient-primary);
+  transform: scaleX(0);
+  transition: transform var(--transition);
+}
+
+.sucursal-card:hover::before {
+  transform: scaleX(1);
 }
 
 .sucursal-card:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
   box-shadow: var(--shadow-lg);
-  background-color: var(--primary-light);
+  border-color: var(--primary);
+  background: linear-gradient(to bottom, var(--surface) 0%, var(--primary-lighter) 100%);
 }
 
 .sucursal-icon {

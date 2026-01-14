@@ -10,10 +10,13 @@ export const useAuthStore = defineStore('auth', () => {
   const companyId = ref(localStorage.getItem('companyId') || null)
   const sucursalId = ref(localStorage.getItem('sucursalId') || null)
   const sucursalNombre = ref(localStorage.getItem('sucursalNombre') || null)
+  const almacenId = ref(localStorage.getItem('almacenId') || null)
+  const almacenNombre = ref(localStorage.getItem('almacenNombre') || null)
 
   // Getters
   const isAuthenticated = computed(() => !!token.value)
   const hasSucursal = computed(() => !!sucursalId.value)
+  const hasAlmacen = computed(() => !!almacenId.value)
 
   // Actions
   async function login(payload) {
@@ -45,12 +48,22 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.setItem('sucursalNombre', nombre)
   }
 
+  function setAlmacen(id, nombre) {
+    almacenId.value = id
+    almacenNombre.value = nombre
+    
+    localStorage.setItem('almacenId', id)
+    localStorage.setItem('almacenNombre', nombre)
+  }
+
   function logout() {
     token.value = null
     usuario.value = null
     companyId.value = null
     sucursalId.value = null
     sucursalNombre.value = null
+    almacenId.value = null
+    almacenNombre.value = null
     const companiesStore = useCompaniesStore()
     companiesStore.reset()
     
@@ -59,6 +72,8 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('companyId')
     localStorage.removeItem('sucursalId')
     localStorage.removeItem('sucursalNombre')
+    localStorage.removeItem('almacenId')
+    localStorage.removeItem('almacenNombre')
     //DeviceId  
     localStorage.removeItem('deviceId')
   }
@@ -79,14 +94,18 @@ export const useAuthStore = defineStore('auth', () => {
     companyId,
     sucursalId,
     sucursalNombre,
+    almacenId,
+    almacenNombre,
     
     // Getters
     isAuthenticated,
     hasSucursal,
+    hasAlmacen,
     
     // Actions
     login,
     setSucursal,
+    setAlmacen,
     logout,
     checkAuth
   }
