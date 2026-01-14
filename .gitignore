@@ -1,0 +1,35 @@
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Dependencies / builds
+node_modules/
+dist/
+dist-ssr/
+dev-dist/
+.vite/
+.cache/
+coverage/
+
+# Environment files (credenciales)
+.env
+.env.*
+
+# Editor/OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Others
+*.local
+.eslintcache
+.npm
+.yarn-integrity

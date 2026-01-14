@@ -1,0 +1,27 @@
+{
+  "name": "cotizaciones-pwa",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
+  },
+  "dependencies": {
+    "vue": "^3.4.15",
+    "vue-router": "^4.2.5",
+    "pinia": "^2.1.7",
+    "axios": "^1.6.5",
+    "@zxing/browser": "^0.1.4",
+    "@zxing/library": "^0.20.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.3",
+    "vite": "^5.0.11",
+    "vite-plugin-pwa": "^0.17.5",
+    "workbox-window": "^7.0.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-vue": "^9.20.1"
+  }
+}
