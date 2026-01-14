@@ -84,7 +84,8 @@ async function handleCodeDetected(codigo) {
     
     const articulo = await articulosService.buscarPorCodigo(
       codigo, 
-      authStore.sucursalId
+      authStore.sucursalId,
+      authStore.companyId
     )
     
     if (articulo) {

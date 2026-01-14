@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import authService from '@/services/auth.service'
+import { useCompaniesStore } from '@/stores/companies'
 
 export const useAuthStore = defineStore('auth', () => {
   // State
@@ -21,7 +22,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       token.value = response.token
       usuario.value = response.usuario
-      companyId.value = payload.idEmpresa ?? payload.company
+      companyId.value = response.companyId ?? payload.idEmpresa ?? payload.company
 
       localStorage.setItem('token', token.value)
       localStorage.setItem('usuario', JSON.stringify(usuario.value))
@@ -50,12 +51,16 @@ export const useAuthStore = defineStore('auth', () => {
     companyId.value = null
     sucursalId.value = null
     sucursalNombre.value = null
+    const companiesStore = useCompaniesStore()
+    companiesStore.reset()
     
     localStorage.removeItem('token')
     localStorage.removeItem('usuario')
     localStorage.removeItem('companyId')
     localStorage.removeItem('sucursalId')
     localStorage.removeItem('sucursalNombre')
+    //DeviceId  
+    localStorage.removeItem('deviceId')
   }
 
   function checkAuth() {

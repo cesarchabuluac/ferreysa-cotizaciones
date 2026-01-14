@@ -101,7 +101,7 @@ const loadingCompanies = computed(() => companiesStore.loading)
 // Cargar empresas al montar el componente
 onMounted(async () => {
   try {
-    await companiesStore.fetchCompanies()
+    await companiesStore.fetchCompanies(true)
   } catch (error) {
     console.error('Error al cargar empresas:', error)
     errorMsg.value = 'Error al cargar las empresas disponibles'

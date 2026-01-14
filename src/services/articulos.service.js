@@ -7,9 +7,9 @@ export default {
    * @param {number} sucursalId - ID de la sucursal
    * @returns {Promise} Artículo encontrado
    */
-  async buscarPorCodigo(codigo, sucursalId) {
+  async buscarPorCodigo(codigo, sucursalId, companyId) {
     return await api.get(`/articulos/buscar/${codigo}`, {
-      params: { sucursalId }
+      params: { sucursalId, companyId }
     })
   },
 

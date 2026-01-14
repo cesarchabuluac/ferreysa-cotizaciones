@@ -11,15 +11,18 @@ export const useCompaniesStore = defineStore('companies', () => {
   const hasCompanies = computed(() => companies.value.length > 0)
 
   // Actions
-  async function fetchCompanies() {
+  async function fetchCompanies(force = false) {
+    if (companies.value.length && !force) {
+      return companies.value
+    }
+
     try {
       loading.value = true
       error.value = null
       
       const response = await authService.getCompanies()
-      //companies.value = response.data
 
-      //Delo que viene de la API
+      //De lo que viene de la API
       companies.value = response.data.filter(e => e.login === true).map(company => ({
         id: company.idEmpresa,
         name: company.nombre
@@ -32,6 +35,12 @@ export const useCompaniesStore = defineStore('companies', () => {
     } finally {
       loading.value = false
     }
+  }
+
+  function reset() {
+    companies.value = []
+    loading.value = false
+    error.value = null
   }
 
   function clearError() {
@@ -47,6 +56,7 @@ export const useCompaniesStore = defineStore('companies', () => {
     hasCompanies,
     // Actions
     fetchCompanies,
+    reset,
     clearError
   }
 })

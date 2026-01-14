@@ -15,11 +15,14 @@
       <div v-else class="sucursales-grid">
         <div 
           v-for="sucursal in sucursales" 
-          :key="sucursal.id"
+          :key="sucursal.sucursalId"
           @click="selectSucursal(sucursal)"
           class="sucursal-card"
         >
-          <div class="sucursal-icon">🏢</div>
+          <div class="sucursal-icon">
+            <!-- 🏢 -->
+             <img src="/logo/ferreysa.png" alt="Logo Ferreysa" height="65" />
+            </div>
           <h3>{{ sucursal.nombre }}</h3>
           <p class="sucursal-info">{{ sucursal.direccion }}</p>
         </div>
@@ -47,7 +50,13 @@ const errorMsg = ref('')
 
 onMounted(async () => {
   try {
-    sucursales.value = await authService.getSucursales()
+    const response = await authService.getSucursales(authStore.companyId)
+    if (response?.isSuccessful) {
+      sucursales.value = response.data
+    }
+    else {
+      errorMsg.value = response?.message || 'Error al cargar sucursales'
+    }
   } catch (error) {
     errorMsg.value = 'Error al cargar sucursales'
     console.error(error)
@@ -57,8 +66,9 @@ onMounted(async () => {
 })
 
 function selectSucursal(sucursal) {
-  authStore.setSucursal(sucursal.id, sucursal.nombre)
-  router.push('/scanner')
+    if(!sucursal) return
+    authStore.setSucursal(sucursal.sucursalId, sucursal.nombre)
+    router.push('/scanner')
 }
 
 function handleLogout() {
