@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import authService from '@/services/auth.service'
 import { useCompaniesStore } from '@/stores/companies'
+import { useCotizacionStore } from '@/stores/cotizacion'
 
 export const useAuthStore = defineStore('auth', () => {
   // State
@@ -41,6 +42,16 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function setSucursal(id, nombre) {
+    // Si cambia de sucursal, limpiar almacén y cotización para evitar datos cruzados
+    if (sucursalId.value && sucursalId.value !== id) {
+      const cotizacionStore = useCotizacionStore()
+      cotizacionStore.clear()
+      almacenId.value = null
+      almacenNombre.value = null
+      localStorage.removeItem('almacenId')
+      localStorage.removeItem('almacenNombre')
+    }
+
     sucursalId.value = id
     sucursalNombre.value = nombre
     
@@ -57,6 +68,8 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function logout() {
+    const cotizacionStore = useCotizacionStore()
+    cotizacionStore.clear()
     token.value = null
     usuario.value = null
     companyId.value = null

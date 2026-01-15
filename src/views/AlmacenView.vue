@@ -53,10 +53,12 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { useCotizacionStore } from '@/stores/cotizacion'
 import authService from '@/services/auth.service'
 
 const router = useRouter()
 const authStore = useAuthStore()
+const cotizacionStore = useCotizacionStore()
 
 const almacenes = ref([])
 const isLoading = ref(true)
@@ -93,6 +95,7 @@ function handleBack() {
   // Limpiar almacén y regresar a selección de sucursal
   localStorage.removeItem('almacenId')
   localStorage.removeItem('almacenNombre')
+  cotizacionStore.clear()
   router.push('/sucursal')
 }
 
