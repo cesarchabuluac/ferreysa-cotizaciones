@@ -440,7 +440,7 @@ function formatPrice(price) {
 .resumen-row {
   display: flex;
   justify-content: space-between;
-  padding: 8px 0;
+  /* padding: 8px 0; */
   font-size: 16px;
   color: var(--text-primary);
 }
@@ -449,7 +449,7 @@ function formatPrice(price) {
   border-top: 2px solid var(--divider-color);
   padding-top: 12px;
   margin-top: 8px;
-  font-size: 32px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--primary-color);
 }

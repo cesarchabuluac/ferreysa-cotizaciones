@@ -3,12 +3,12 @@ import Swal from 'sweetalert2'
 const baseConfig = {
   confirmButtonColor: '#8B1538',
   cancelButtonColor: '#546E7A',
-  showClass: { popup: 'swal2-noanimation' },
-  hideClass: { popup: '' },
+  showClass: { popup: 'swal-animate-show' },
+  hideClass: { popup: 'swal-animate-hide' },
   buttonsStyling: false,
   customClass: {
     confirmButton: 'btn btn-primary',
-    cancelButton: 'btn btn-accent',
+    cancelButton: 'btn swal-btn-cancel',
     denyButton: 'btn btn-secondary',
     popup: 'swal-popup-mobile'
   }
