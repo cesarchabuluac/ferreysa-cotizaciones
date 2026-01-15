@@ -125,12 +125,14 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useCotizacionStore } from '@/stores/cotizacion'
 import { useVibration } from '@/composables/useVibration'
+import { useAlerts } from '@/composables/useAlerts'
 import cotizacionesService from '@/services/cotizaciones.service'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const cotizacionStore = useCotizacionStore()
 const { vibrateSuccess, vibrateError } = useVibration()
+const { confirm, error: showError } = useAlerts()
 
 const isProcessing = ref(false)
 const errorMsg = ref('')
@@ -139,11 +141,17 @@ function goBack() {
   router.push('/scanner')
 }
 
-function limpiar() {
-  if (confirm('¿Estás seguro de limpiar la cotización?')) {
-    cotizacionStore.clear()
-    goBack()
-  }
+async function limpiar() {
+  const accepted = await confirm({
+    title: 'Limpiar cotización',
+    text: 'Se eliminarán todos los artículos de la lista.',
+    icon: 'warning',
+    confirmButtonText: 'Sí, limpiar',
+    cancelButtonText: 'Cancelar'
+  })
+  if (!accepted) return
+  cotizacionStore.clear()
+  goBack()
 }
 
 function incrementQuantity(index) {
@@ -163,8 +171,15 @@ function updateQuantity(index, cantidad) {
   cotizacionStore.updateQuantity(index, cantidad)
 }
 
-function removeItem(index) {
-  if (confirm('¿Eliminar este artículo?')) {
+async function removeItem(index) {
+  const accepted = await confirm({
+    title: 'Eliminar artículo',
+    text: '¿Quieres quitar este artículo de la cotización?',
+    icon: 'warning',
+    confirmButtonText: 'Eliminar',
+    cancelButtonText: 'Cancelar'
+  })
+  if (accepted) {
     cotizacionStore.removeItem(index)
   }
 }
@@ -206,6 +221,7 @@ async function confirmarCotizacion() {
   } catch (error) {
     vibrateError()
     errorMsg.value = error.message || 'Error al crear la cotización'
+    showError('Error', errorMsg.value)
     setTimeout(() => {
       errorMsg.value = ''
     }, 5000)

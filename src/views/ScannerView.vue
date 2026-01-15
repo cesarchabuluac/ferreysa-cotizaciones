@@ -49,10 +49,31 @@
               Existencia: <strong>{{ articuloEncontrado.existencia }}</strong> Unidad Medidad: <strong>{{ articuloEncontrado.unidad_Venta }}</strong>
             </p>
           </div>
+          <div class="cantidad-selector">
+            <p class="label">Cantidad</p>
+            <div class="cantidad-controls">
+              <button class="qty-btn" @click="cantidadSeleccionada = Math.max(1, cantidadSeleccionada - 1)">
+                <i class="fa-solid fa-minus" aria-hidden="true"></i>
+              </button>
+              <input 
+                type="number" 
+                min="1" 
+                max="999"
+                v-model.number="cantidadSeleccionada"
+                class="qty-input"
+              />
+              <button class="qty-btn" @click="cantidadSeleccionada = Math.min(999, cantidadSeleccionada + 1)">
+                <i class="fa-solid fa-plus" aria-hidden="true"></i>
+              </button>
+              <!-- <button class="qty-quick" @click="pedirCantidad()">
+                <i class="fa-solid fa-keyboard" aria-hidden="true"></i>
+              </button> -->
+            </div>
+          </div>
           <button @click="agregarArticulo" class="btn btn-success btn-block">
             <span class="icon-text">
               <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
-              <span>Agregar a Cotización</span>
+              <span>Agregar {{ cantidadSeleccionada }} a Cotización</span>
             </span>
           </button>
           <button @click="cerrarModal" class="btn btn-secondary btn-block mt-1">
@@ -80,6 +101,7 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useCotizacionStore } from '@/stores/cotizacion'
 import { useVibration } from '@/composables/useVibration'
+import { useAlerts } from '@/composables/useAlerts'
 import BarcodeScanner from '@/components/Scanner/BarcodeScanner.vue'
 import articulosService from '@/services/articulos.service'
 
@@ -87,10 +109,12 @@ const router = useRouter()
 const authStore = useAuthStore()
 const cotizacionStore = useCotizacionStore()
 const { vibrateSuccess, vibrateError } = useVibration()
+const { promptQuantity, info, error: showError } = useAlerts()
 
 const isLoadingArticulo = ref(false)
 const articuloEncontrado = ref(null)
 const errorMsg = ref('')
+const cantidadSeleccionada = ref(1)
 
 async function handleCodeDetected(codigo) {
   try {
@@ -105,6 +129,7 @@ async function handleCodeDetected(codigo) {
     
     if (articulo) {
       articuloEncontrado.value = articulo
+      cantidadSeleccionada.value = 1
       vibrateSuccess()
     } else {
       throw new Error('Artículo no encontrado')
@@ -121,13 +146,24 @@ async function handleCodeDetected(codigo) {
 }
 
 function agregarArticulo() {
-  cotizacionStore.addItem(articuloEncontrado.value)
+  cotizacionStore.addItem(articuloEncontrado.value, cantidadSeleccionada.value)
   vibrateSuccess()
   articuloEncontrado.value = null
 }
 
 function cerrarModal() {
   articuloEncontrado.value = null
+}
+
+async function pedirCantidad() {
+  const value = await promptQuantity({
+    title: 'Cantidad a agregar',
+    defaultValue: cantidadSeleccionada.value,
+    max: 999
+  })
+  if (value) {
+    cantidadSeleccionada.value = value
+  }
 }
 
 function verCotizacion() {
@@ -286,6 +322,60 @@ function formatPrice(price) {
   font-size: 14px;
   color: var(--text-secondary);
   margin: 0;
+}
+
+.cantidad-selector {
+  margin-bottom: 16px;
+  /**Center */
+  text-align: center;
+}
+
+.cantidad-selector .label {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.cantidad-controls {
+  /* display: flex; */
+  align-items: center;
+  gap: 8px;
+}
+
+.qty-btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: var(--primary-color);
+  /* color: #fff; */
+  border-radius: 10px;
+  font-size: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qty-input {
+  width: 80px;
+  text-align: center;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 8px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.qty-quick {
+  height: 40px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 10px;
+  background: var(--accent-gray);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
 
 .error-toast {

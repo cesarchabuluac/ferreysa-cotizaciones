@@ -74,11 +74,13 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useVibration } from '@/composables/useVibration'
+import { useAlerts } from '@/composables/useAlerts'
 import cotizacionesService from '@/services/cotizaciones.service'
 
 const router = useRouter()
 const route = useRoute()
 const { vibrateSuccess } = useVibration()
+const { error: showError, info } = useAlerts()
 
 const folio = ref(route.params.folio)
 const isImpriendo = ref(false)
@@ -106,7 +108,7 @@ async function imprimirTicket() {
     imprimirEnNavegador(datosImpresion)
     
   } catch (error) {
-    alert('Error al imprimir: ' + error.message)
+    showError('Error al imprimir', error.message || 'No se pudo imprimir el ticket.')
   } finally {
     isImpriendo.value = false
   }
@@ -177,9 +179,9 @@ async function verDetalle() {
   try {
     cotizacionDetalle.value = await cotizacionesService.obtenerPorFolio(folio.value)
     // Mostrar modal con detalle (por implementar)
-    alert('Detalle de cotización:\n' + JSON.stringify(cotizacionDetalle.value, null, 2))
+    info('Detalle de cotización', JSON.stringify(cotizacionDetalle.value, null, 2))
   } catch (error) {
-    alert('Error al obtener detalle: ' + error.message)
+    showError('Error al obtener detalle', error.message || 'No se pudo cargar el detalle')
   }
 }
 </script>
