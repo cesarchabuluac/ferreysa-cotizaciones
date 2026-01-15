@@ -34,8 +34,14 @@
         class="btn btn-primary btn-block"
         :disabled="hasError"
       >
-        <span v-if="!hasError">📷 Iniciar Escáner</span>
-        <span v-else>⚠️ Error de Cámara</span>
+        <span v-if="!hasError" class="icon-text">
+          <i class="fa-solid fa-camera" aria-hidden="true"></i>
+          <span>Iniciar Escáner</span>
+        </span>
+        <span v-else class="icon-text">
+          <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+          <span>Error de Cámara</span>
+        </span>
       </button>
       
       <button 
@@ -43,7 +49,10 @@
         @click="handleStop" 
         class="btn btn-secondary btn-block"
       >
-        ⏹️ Detener Escáner
+        <span class="icon-text">
+          <i class="fa-solid fa-stop" aria-hidden="true"></i>
+          <span>Detener Escáner</span>
+        </span>
       </button>
 
       <!-- Input manual como fallback -->
@@ -60,8 +69,9 @@
           @click="handleManualInput" 
           class="btn btn-success"
           :disabled="!manualCode"
+          aria-label="Agregar código manual"
         >
-          ✓
+          <i class="fa-solid fa-check" aria-hidden="true"></i>
         </button>
       </div>
     </div>

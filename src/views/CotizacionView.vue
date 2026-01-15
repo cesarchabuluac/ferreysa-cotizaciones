@@ -3,11 +3,15 @@
     <!-- Header -->
     <div class="cotizacion-header">
       <button @click="goBack" class="btn-icon">
-        ← Volver
+        <span class="icon-text">
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+          <span>Volver</span>
+        </span>
       </button>
       <h2>Cotización</h2>
       <button @click="limpiar" class="btn-icon" v-if="cotizacionStore.itemsCount > 0">
-        🗑️
+        <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
+        <span class="sr-only">Limpiar cotización</span>
       </button>
     </div>
 
@@ -15,7 +19,9 @@
     <div class="cotizacion-content">
       <!-- Lista vacía -->
       <div v-if="cotizacionStore.itemsCount === 0" class="empty-state">
-        <div class="empty-icon">📦</div>
+        <div class="empty-icon">
+          <i class="fa-solid fa-box-open" aria-hidden="true"></i>
+        </div>
         <h3>No hay artículos</h3>
         <p>Escanea artículos para agregarlos a la cotización</p>
         <button @click="goBack" class="btn btn-primary">
@@ -68,7 +74,8 @@
               @click="removeItem(index)"
               class="btn-remove"
             >
-              ✕
+              <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+              <span class="sr-only">Eliminar artículo</span>
             </button>
           </div>
         </div>
@@ -97,7 +104,10 @@
         class="btn btn-success btn-block"
         :disabled="isProcessing"
       >
-        <span v-if="!isProcessing">✓ Confirmar Cotización</span>
+        <span v-if="!isProcessing" class="icon-text">
+          <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+          <span>Confirmar Cotización</span>
+        </span>
         <span v-else>Procesando...</span>
       </button>
     </div>
@@ -238,13 +248,17 @@ function formatPrice(price) {
 }
 
 .btn-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background: transparent;
   border: none;
   color: var(--primary-color);
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 600;
   cursor: pointer;
   padding: 8px;
+  line-height: 1;
 }
 
 .cotizacion-content {
@@ -262,6 +276,7 @@ function formatPrice(price) {
 .empty-icon {
   font-size: 80px;
   margin-bottom: 16px;
+  color: var(--border-dark);
 }
 
 .empty-state h3 {
@@ -384,8 +399,11 @@ function formatPrice(price) {
   background-color: var(--error-color);
   /* color: white; */
   border-radius: 6px;
-  font-size: 24px;
+  font-size: 20px;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cotizacion-footer {

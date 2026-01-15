@@ -21,7 +21,7 @@
           class="almacen-card"
         >
           <div class="almacen-icon">
-            📦
+            <i class="fa-solid fa-warehouse" aria-hidden="true"></i>
           </div>
           <h3>{{ almacen.almacen }}</h3>
           <p class="almacen-info">{{ almacen.sucursal }}</p>
@@ -33,11 +33,17 @@
       </div>
 
       <button @click="handleBack" class="btn btn-accent btn-block">
-        ← Cambiar Sucursal
+        <span class="icon-text">
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+          <span>Cambiar Sucursal</span>
+        </span>
       </button>
       
       <button @click="handleLogout" class="btn btn-primary btn-block mt-3">
-        Cerrar Sesión
+        <span class="icon-text">
+          <i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i>
+          <span>Cerrar Sesión</span>
+        </span>
       </button>
     </div>
   </div>
@@ -173,6 +179,7 @@ function handleLogout() {
 .almacen-icon {
   font-size: 48px;
   margin-bottom: 12px;
+  color: var(--secondary);
 }
 
 .almacen-card h3 {

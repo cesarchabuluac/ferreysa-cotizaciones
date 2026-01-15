@@ -4,7 +4,9 @@
       <!-- Success State -->
       <div class="success-animation">
         <div class="checkmark-circle">
-          <div class="checkmark">✓</div>
+          <div class="checkmark">
+            <i class="fa-solid fa-check" aria-hidden="true"></i>
+          </div>
         </div>
       </div>
 
@@ -27,7 +29,10 @@
           class="btn btn-primary btn-block"
           :disabled="isImpriendo"
         >
-          <span v-if="!isImpriendo">🖨️ Imprimir Ticket</span>
+          <span v-if="!isImpriendo" class="icon-text">
+            <i class="fa-solid fa-print" aria-hidden="true"></i>
+            <span>Imprimir Ticket</span>
+          </span>
           <span v-else>Imprimiendo...</span>
         </button>
 
@@ -35,21 +40,30 @@
           @click="nuevaCotizacion" 
           class="btn btn-success btn-block mt-2"
         >
-          ➕ Nueva Cotización
+          <span class="icon-text">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+            <span>Nueva Cotización</span>
+          </span>
         </button>
 
         <button 
           @click="verDetalle" 
           class="btn btn-secondary btn-block mt-2"
         >
-          📄 Ver Detalle
+          <span class="icon-text">
+            <i class="fa-regular fa-file-lines" aria-hidden="true"></i>
+            <span>Ver Detalle</span>
+          </span>
         </button>
       </div>
 
       <!-- Compartir (Web Share API) -->
       <div v-if="canShare" class="share-section mt-3">
         <button @click="compartir" class="btn-share">
-          📤 Compartir Folio
+          <span class="icon-text">
+            <i class="fa-solid fa-share-from-square" aria-hidden="true"></i>
+            <span>Compartir Folio</span>
+          </span>
         </button>
       </div>
     </div>
@@ -209,6 +223,10 @@ async function verDetalle() {
   animation: fadeIn 0.5s ease 0.3s both;
 }
 
+.checkmark i {
+  font-size: 60px;
+}
+
 @keyframes scaleIn {
   0% {
     transform: scale(0);
@@ -297,6 +315,9 @@ async function verDetalle() {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-share:active {

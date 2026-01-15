@@ -3,7 +3,10 @@
     <!-- Header -->
     <div class="scanner-header">
       <button @click="goBack" class="btn-icon">
-        ← Volver
+        <span class="icon-text">
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+          <span>Volver</span>
+        </span>
       </button>
       <div class="header-info">
         <span class="sucursal-name">{{ authStore.sucursalNombre }}</span>
@@ -14,7 +17,10 @@
         class="btn-icon"
         :disabled="cotizacionStore.itemsCount === 0"
       >
-        🛒 Ver
+        <span class="icon-text">
+          <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
+          <span>Ver</span>
+        </span>
       </button>
     </div>
 
@@ -31,7 +37,10 @@
     <transition name="slide-up">
       <div v-if="articuloEncontrado" class="articulo-modal">
         <div class="articulo-content">
-          <h3>✓ Artículo Encontrado</h3>
+          <h3 class="found-title">
+            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+            <span>Artículo Encontrado</span>
+          </h3>
           <div class="articulo-info">
             <p class="articulo-clave">{{ articuloEncontrado.clave_Articulo }}</p>
             <p class="articulo-descripcion">{{ articuloEncontrado.nombre }}</p>
@@ -41,10 +50,16 @@
             </p>
           </div>
           <button @click="agregarArticulo" class="btn btn-success btn-block">
-            Agregar a Cotización
+            <span class="icon-text">
+              <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+              <span>Agregar a Cotización</span>
+            </span>
           </button>
           <button @click="cerrarModal" class="btn btn-secondary btn-block mt-1">
-            Cancelar
+            <span class="icon-text">
+              <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+              <span>Cancelar</span>
+            </span>
           </button>
         </div>
       </div>
@@ -152,6 +167,9 @@ function formatPrice(price) {
 }
 
 .btn-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background: transparent;
   border: none;
   color: white;
@@ -161,6 +179,7 @@ function formatPrice(price) {
   padding: 8px 12px;
   border-radius: 6px;
   transition: background-color 0.2s;
+  line-height: 1;
 }
 
 .btn-icon:active {
@@ -226,6 +245,14 @@ function formatPrice(price) {
   color: var(--success-color);
   margin-bottom: 16px;
   text-align: center;
+}
+
+.found-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  width: 100%;
 }
 
 .articulo-info {
