@@ -109,7 +109,7 @@ const router = useRouter()
 const authStore = useAuthStore()
 const cotizacionStore = useCotizacionStore()
 const { vibrateSuccess, vibrateError } = useVibration()
-const { promptQuantity, info, error: showError } = useAlerts()
+const { promptQuantity, confirm, info, error: showError } = useAlerts()
 
 const isLoadingArticulo = ref(false)
 const articuloEncontrado = ref(null)
@@ -170,8 +170,19 @@ function verCotizacion() {
   router.push('/cotizacion')
 }
 
-function goBack() {
-  router.push('/sucursal')
+async function goBack() {
+  if (cotizacionStore.itemsCount > 0) {
+    const proceed = await confirm({
+      title: 'Cotización pendiente',
+      text: 'Si regresas a almacenes se borrará la cotización en curso. ¿Deseas continuar?',
+      icon: 'warning',
+      confirmButtonText: 'Borrar y salir',
+      cancelButtonText: 'Seguir aquí'
+    })
+    if (!proceed) return
+    cotizacionStore.clear()
+  }
+  router.push('/almacen')
 }
 
 function formatPrice(price) {

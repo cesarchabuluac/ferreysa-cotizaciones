@@ -39,10 +39,14 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { useCotizacionStore } from '@/stores/cotizacion'
+import { useAlerts } from '@/composables/useAlerts'
 import authService from '@/services/auth.service'
 
 const router = useRouter()
 const authStore = useAuthStore()
+const cotizacionStore = useCotizacionStore()
+const { confirm } = useAlerts()
 
 const sucursales = ref([])
 const isLoading = ref(true)
@@ -65,10 +69,23 @@ onMounted(async () => {
   }
 })
 
-function selectSucursal(sucursal) {
-    if(!sucursal) return
-    authStore.setSucursal(sucursal.sucursalId, sucursal.nombre)
-    router.push('/almacen')
+async function selectSucursal(sucursal) {
+  if (!sucursal) return
+
+  if (cotizacionStore.itemsCount > 0 && sucursal.sucursalId !== authStore.sucursalId) {
+    const accepted = await confirm({
+      title: 'Cotización pendiente',
+      text: 'Si cambias de sucursal se borrarán los artículos del carrito.',
+      icon: 'warning',
+      confirmButtonText: 'Continuar y borrar',
+      cancelButtonText: 'Cancelar'
+    })
+    if (!accepted) return
+    cotizacionStore.clear()
+  }
+
+  authStore.setSucursal(sucursal.sucursalId, sucursal.nombre)
+  router.push('/almacen')
 }
 
 function handleLogout() {

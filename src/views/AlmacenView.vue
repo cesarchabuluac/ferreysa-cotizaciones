@@ -54,11 +54,13 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useCotizacionStore } from '@/stores/cotizacion'
+import { useAlerts } from '@/composables/useAlerts'
 import authService from '@/services/auth.service'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const cotizacionStore = useCotizacionStore()
+const { confirm } = useAlerts()
 
 const almacenes = ref([])
 const isLoading = ref(true)
@@ -84,15 +86,39 @@ onMounted(async () => {
   }
 })
 
-function selectAlmacen(almacen) {
+async function selectAlmacen(almacen) {
   if (!almacen) return
+
+  // Si hay artículos y se cambia de almacén, advertir que se limpia la cotización
+  if (cotizacionStore.itemsCount > 0 && almacen.almacen_Id !== authStore.almacenId) {
+    const accepted = await confirm({
+      title: 'Cotización pendiente',
+      text: 'Si cambias de almacén se borrarán los artículos del carrito.',
+      icon: 'warning',
+      confirmButtonText: 'Continuar y borrar',
+      cancelButtonText: 'Cancelar'
+    })
+    if (!accepted) return
+    cotizacionStore.clear()
+  }
   
   authStore.setAlmacen(almacen.almacen_Id, almacen.almacen)
   router.push('/scanner')
 }
 
-function handleBack() {
-  // Limpiar almacén y regresar a selección de sucursal
+async function handleBack() {
+  // Si hay artículos, confirmar antes de limpiar
+  if (cotizacionStore.itemsCount > 0) {
+    const accepted = await confirm({
+      title: 'Cotización pendiente',
+      text: 'Tienes artículos en el carrito. Si cambias de sucursal se borrarán.',
+      icon: 'warning',
+      confirmButtonText: 'Continuar y borrar',
+      cancelButtonText: 'Mantenerme aquí'
+    })
+    if (!accepted) return
+  }
+
   localStorage.removeItem('almacenId')
   localStorage.removeItem('almacenNombre')
   cotizacionStore.clear()
