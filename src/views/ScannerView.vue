@@ -33,11 +33,11 @@
         <div class="articulo-content">
           <h3>✓ Artículo Encontrado</h3>
           <div class="articulo-info">
-            <p class="articulo-clave">{{ articuloEncontrado.claveArticulo }}</p>
-            <p class="articulo-descripcion">{{ articuloEncontrado.descripcion }}</p>
+            <p class="articulo-clave">{{ articuloEncontrado.clave_Articulo }}</p>
+            <p class="articulo-descripcion">{{ articuloEncontrado.nombre }}</p>
             <p class="articulo-precio">${{ formatPrice(articuloEncontrado.precio) }}</p>
             <p class="articulo-existencia">
-              Existencia: {{ articuloEncontrado.existencia }} {{ articuloEncontrado.unidad }}
+              Existencia: <strong>{{ articuloEncontrado.existencia }}</strong> Unidad Medidad: <strong>{{ articuloEncontrado.unidad_Venta }}</strong>
             </p>
           </div>
           <button @click="agregarArticulo" class="btn btn-success btn-block">

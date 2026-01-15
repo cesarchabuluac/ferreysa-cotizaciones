@@ -83,7 +83,7 @@
           <span>${{ formatPrice(cotizacionStore.subtotal) }}</span>
         </div>
         <div class="resumen-row">
-          <span>IVA (16%):</span>
+          <span>IVA (8%):</span>
           <span>${{ formatPrice(cotizacionStore.totalImpuestos) }}</span>
         </div>
         <div class="resumen-row total-row">
@@ -159,12 +159,17 @@ function removeItem(index) {
   }
 }
 
+/**
+ * Calcula el total de un artículo
+ * NOTA: Por ahora no se incluye impuestos en subtotal de la partida ya que se aplica de forma global
+ * @param item 
+ */
 function calcularTotalItem(item) {
   const subtotal = item.precioUnitario * item.unidades
   const descuento = subtotal * (item.pctjeDscto / 100)
   const neto = subtotal - descuento
   const impuesto = neto * (item.tasaImpuesto / 100)
-  return neto + impuesto
+  return neto //+ impuesto
 }
 
 async function confirmarCotizacion() {
@@ -326,9 +331,9 @@ function formatPrice(price) {
   height: 36px;
   border: none;
   background-color: var(--primary-color);
-  color: white;
+  /* color: white; */
   border-radius: 6px;
-  font-size: 18px;
+  font-size: 32px;
   font-weight: 700;
   cursor: pointer;
   transition: background-color 0.2s;
@@ -377,9 +382,9 @@ function formatPrice(price) {
   height: 36px;
   border: none;
   background-color: var(--error-color);
-  color: white;
+  /* color: white; */
   border-radius: 6px;
-  font-size: 18px;
+  font-size: 24px;
   cursor: pointer;
 }
 
@@ -402,7 +407,7 @@ function formatPrice(price) {
   display: flex;
   justify-content: space-between;
   padding: 8px 0;
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-primary);
 }
 
@@ -410,7 +415,7 @@ function formatPrice(price) {
   border-top: 2px solid var(--divider-color);
   padding-top: 12px;
   margin-top: 8px;
-  font-size: 18px;
+  font-size: 32px;
   font-weight: 700;
   color: var(--primary-color);
 }

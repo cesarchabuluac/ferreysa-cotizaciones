@@ -32,9 +32,12 @@ export const useCotizacionStore = defineStore('cotizacion', () => {
   
   // Actions
   function addItem(articulo) {
+
+    console.log(articulo)
+
     // Verificar si el artículo ya existe
     const existingIndex = items.value.findIndex(
-      item => item.articuloId === articulo.articuloId
+      item => item.articuloId === articulo.articulo_Id
     )
     
     if (existingIndex !== -1) {
@@ -43,13 +46,13 @@ export const useCotizacionStore = defineStore('cotizacion', () => {
     } else {
       // Agregar nuevo item
       items.value.push({
-        articuloId: articulo.articuloId,
-        claveArticulo: articulo.claveArticulo,
-        descripcion: articulo.descripcion,
+        articuloId: articulo.articulo_Id,
+        claveArticulo: articulo.clave_Articulo,
+        descripcion: articulo.nombre,
         unidades: 1,
         precioUnitario: articulo.precio,
         pctjeDscto: 0,
-        tasaImpuesto: articulo.tasaImpuesto || 16,
+        tasaImpuesto: articulo.tasa_Impuesto || 8,
         posicion: items.value.length + 1
       })
     }
